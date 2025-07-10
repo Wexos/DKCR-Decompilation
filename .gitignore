@@ -1,0 +1,9 @@
+# Game
+main.dol
+
+# IDE
+.vs
+.vscode
+
+# Build
+__pycache__
