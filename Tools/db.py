@@ -17,6 +17,7 @@ class SymbolInfo:
     def __init__(self):
         self.size = 0
         self.matches = False
+        self.type = "F"
         self.library = None
         self.obj = None
         self.symbol = None
@@ -123,6 +124,12 @@ class SymbolDB:
             
         return None
 
+    def get_sym_type(self, address):
+        if address in self.symbols:
+            return self.symbols[address].type
+            
+        return None
+
     def get_obj(self, address):
         if address in self.symbols:
             return self.symbols[address].obj
@@ -132,6 +139,12 @@ class SymbolDB:
     def get_library(self, address):
         if address in self.symbols:
             return self.symbols[address].library
+            
+        return None
+
+    def get_library(self, address):
+        if address in self.symbols:
+            return self.symbols[address].type
             
         return None
 
@@ -344,8 +357,6 @@ def gen_map(sym_db, args):
 
                 output.write(f"  {util.hex32(text1_offset)} {util.hex24(size)} {util.hex32(address)} {util.hex32(0)}: {symbol}\n")
         elif symbol_type == "ghidra":
-            write = lambda symbol, address, type : output.write(f"{symbol} {util.hex32(address)} {type}\n")
-
             for address in sym_db.get_all_functions():
                 symbol = sym_db.get_symbol(address)
 
@@ -358,7 +369,16 @@ def gen_map(sym_db, args):
                 except:
                     name = symbol
 
-                write(name, address, "f")
+                symbol_type = sym_db.get_sym_type(address)
+
+                if symbol_type == "F":
+                    type = "f"
+                elif symbol_type == "D":
+                    type = "l"
+                else:
+                    continue
+
+                output.write(f"{name} {util.hex32(address)} {type}\n")
 
         elif symbol_type == "spacemine":
             for address in sym_db.get_all_functions():
