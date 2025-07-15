@@ -4,8 +4,8 @@ import util
 SECTION_TO_ADDRESS = {
      1: 0x80004000, # .text0 (.init)
      2: 0x800068E0, # .text1 (.text)
-     5: 0x80544580, # .data4 (.data)
-     6: 0x805650e0, # .data5 (.rodata)
+     5: 0x80544580, # .data4 (.rodata)
+     6: 0x805650e0, # .data5 (.data)
      7: 0x805a7f80, # .uninitialized0 (.bss)
      8: 0x805A7F80, # .uninitialized0, seems weird....
      9: 0x8061fc20, # .data7 (.sdata2)

@@ -18,6 +18,7 @@ class SymbolInfo:
         self.size = 0
         self.matches = False
         self.type = "F"
+        self.section = ".unk"
         self.library = None
         self.obj = None
         self.symbol = None
@@ -41,7 +42,7 @@ class SymbolDB:
                 line_split = line.rstrip().split(",")
                 fix_fields_read(line_split)
 
-                if len(line_split) != 7:
+                if len(line_split) != 8:
                     print(f"Invalid line: \"{line}\"")
                     sys.exit()
 
@@ -50,10 +51,11 @@ class SymbolDB:
                 address = int(line_split[0], 16)
                 symbol.size = int(line_split[1], 16)
                 symbol.type = line_split[2]
-                symbol.matches = line_split[3] == "T"
-                symbol.library = line_split[4]
-                symbol.obj = line_split[5]
-                symbol.symbol = line_split[6]
+                symbol.section = line_split[3]
+                symbol.matches = line_split[4] == "T"
+                symbol.library = line_split[5]
+                symbol.obj = line_split[6]
+                symbol.symbol = line_split[7]
 
                 self.symbols[address] = symbol
 
@@ -61,18 +63,19 @@ class SymbolDB:
         self.sort()
         
         with open(self.file_name, "w") as output:
-            output.write("Address,Size,Type,Decompiled,Library,Obj,Name\n")
+            output.write("Address,Size,Type,Section,Decompiled,Library,Obj,Name\n")
 
             for address, info in self.symbols.items():
                 s_address = util.hex32(address)
                 s_size = util.hex24(info.size)
                 s_type = info.type
+                s_section = info.section
                 s_matches = 'T' if info.matches else 'F'
                 s_lib = info.library
                 s_obj = info.obj
                 s_symbol = info.symbol
 
-                fields = [s_address, s_size, s_type, s_matches, s_lib, s_obj, s_symbol]
+                fields = [s_address, s_size, s_type, s_section, s_matches, s_lib, s_obj, s_symbol]
                 fix_fields_write(fields)
                                                     
                 line = ",".join(fields)
@@ -139,12 +142,6 @@ class SymbolDB:
     def get_library(self, address):
         if address in self.symbols:
             return self.symbols[address].library
-            
-        return None
-
-    def get_library(self, address):
-        if address in self.symbols:
-            return self.symbols[address].type
             
         return None
 
