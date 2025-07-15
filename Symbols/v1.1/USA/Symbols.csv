@@ -31365,7 +31365,7 @@ Address,Size,Type,Section,Decompiled,Library,Obj,Name
 8057B2C8,000000,D,.data,F,,,
 8057B2E8,000000,D,.data,F,,,
 8057B328,000000,D,.data,F,,,
-8057B340,000000,D,.data,F,,,
+8057B340,00001C,D,.data,F,,,__vt__20CFilteredRandomRange
 8057B360,000000,D,.data,F,,,
 8057B370,000000,D,.data,F,,,
 8057B380,000000,D,.data,F,,,
