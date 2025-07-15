@@ -13,10 +13,6 @@ SECTION_TO_ADDRESS = {
 }
 
 SECTIONS_TO_IGNORE = {
-    1,
-    2,
-    5,
-    6,
     65521
 }
 
